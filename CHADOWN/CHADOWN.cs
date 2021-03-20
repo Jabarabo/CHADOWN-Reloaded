@@ -8,7 +8,6 @@ namespace CHADOWN
     {
         public static void AVComboMethod() //Main part of the A/V Combo module.
         {
-            string[] AVCarr = new string[3];
             Console.Clear();
             Console.WriteLine("Select the video file you wish to use.");
             OpenFileDialog Videofileselect = new OpenFileDialog //The following code opens a file explorer dialog so the video file can be chosen. More formats will be added when I clean this up a bit.
@@ -20,9 +19,7 @@ namespace CHADOWN
                 RestoreDirectory = true
             };
             if (Videofileselect.ShowDialog() == DialogResult.OK)
-                {
-                    AVCarr[0] = Videofileselect.FileName;
-                }
+                { }
             Console.Clear();
             Console.WriteLine("Select the video file you wish to use.");
             OpenFileDialog Audiofileselect = new OpenFileDialog //The following code opens a file explorer dialog so the audio file can be chosen. More formats will be added when I clean this up a bit.
@@ -34,13 +31,11 @@ namespace CHADOWN
                 RestoreDirectory = true
             };
             if (Audiofileselect.ShowDialog() == DialogResult.OK)
-                {
-                    AVCarr[1] = Audiofileselect.FileName;
-                }
+                { }
             Console.Clear();
             Console.WriteLine("What would you like the file to be named? Don't include the file extension in the name.");
-            AVCarr[2] = Console.ReadLine(); //Video file output is named
-            string AVCInputs = $@"/C ffmpeg -shortest -i ${AVCarr[0]} -i ${AVCarr[1]} -c:v copy -c:a aac ${AVCarr[2]}.mp4";
+            string OutputName = Console.ReadLine(); //Video file output is named
+            string AVCInputs = $@"/C ffmpeg -shortest -i ${Videofileselect.FileName} -i ${Audiofileselect.FileName} -c:v copy -c:a aac ${OutputName}.mp4";
             Process p = Process.Start("CMD.exe", AVCInputs);
             p.WaitForExit();
         }
