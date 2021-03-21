@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace CHADOWN
 {
-    public static class AVCombinationClass //Module for combining Audio and Video files for those stubborn websites like reddit. Full-on reddit support will be added once I learn how.
+    public static class CHADMethods //Class containing all the functional methods for CHADOWN
     {
         public static void AVComboMethod() //Main part of the A/V Combo module.
         {
@@ -43,9 +44,6 @@ namespace CHADOWN
             Process p = Process.Start("CMD.exe", AVCInputs);
             p.WaitForExit();
         }
-    }
-    public static class YTDLMethodClass //Module for Youtube-DL support
-    {
         public static void YTDLmethod() //Main part of the YTDL module.
         {
             string[] YTDLarr = new string[5];
@@ -78,30 +76,17 @@ namespace CHADOWN
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
-    }
-    public static class FMPGMethodClass //Module for ffmpeg (BLOB) support
-    {
         public static void FMPGmethod() //Main part of the ffmpeg module
-        {
-            string FMPGlink = FMPGLinkGet();
-            string FMPGvideoname = FMPGNameGet();
-            string strCmdText = $@"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i ${FMPGlink} ${Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)}\${FMPGvideoname}.mp4";
-            Process p = Process.Start("CMD.exe", strCmdText);
-            p.WaitForExit();
-        }
-        private static string FMPGLinkGet() //Asks the user for the link to the playlist and returns it.
         {
             Console.WriteLine("Please paste the link for the playlist (usually a .m3u8) file");
             string FMPGlink = Console.ReadLine();
             Console.Clear();
-            return FMPGlink;
-        }
-        private static string FMPGNameGet() //Asks the user for what they want the video name to be and returns it.
-        {
             Console.WriteLine("What would you like to name the video (Don't include the filetype in the name)?");
             string FMPGvideoname = Console.ReadLine();
             Console.Clear();
-            return FMPGvideoname;
+            string strCmdText = $@"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i ${FMPGlink} ${Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)}\${FMPGvideoname}.mp4";
+            Process p = Process.Start("CMD.exe", strCmdText);
+            p.WaitForExit();
         }
     }
     class CHADOWN
@@ -116,6 +101,7 @@ namespace CHADOWN
         [STAThread]
         static void Main(string[] args)
         {
+            
             while (true)
             {
                 Console.Write("Welcome to Jabs' ");
@@ -132,15 +118,15 @@ namespace CHADOWN
                 Console.Clear();
                 if (ConInputType == "A") //Method call for YTDL
                 {
-                    YTDLMethodClass.YTDLmethod();
+                    CHADMethods.YTDLmethod();
                 }
                 else if (ConInputType == "B") //Method call for ffmpeg
                 {
-                    FMPGMethodClass.FMPGmethod();
+                    CHADMethods.FMPGmethod();
                 }
                 else if (ConInputType == "C")
                 {
-                    AVCombinationClass.AVComboMethod();
+                    CHADMethods.AVComboMethod();
                 }
                 else continue; //Repeat if user selects invalid option
                 Console.Clear();
