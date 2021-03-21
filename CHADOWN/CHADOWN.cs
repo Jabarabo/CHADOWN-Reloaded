@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -88,32 +89,59 @@ namespace CHADOWN
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
-    }
-    class CHADOWN
-    {
-        static void TCol(string RText, string WText)
+        public static void TCol(string RText, string WText)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(RText);
             Console.ResetColor();
             Console.Write(WText);
         }
+    }
+   
+    public class ConfigIO//Handles creating, writing to, and rewriting the config
+    {
+        readonly string ConfigPath = Directory.GetCurrentDirectory() + @"\" + "config.txt";
+        public void CreateConfig()//Creates the config if one is not found
+        {
+            if (!File.Exists(ConfigPath))
+            {
+                using (FileStream ConCreate = File.Create(ConfigPath))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
+                    ConCreate.Write(info, 0, info.Length);
+                }
+            }
+        }
+        public string ReadConfig()
+        {
+            string Outpath = System.IO.File.ReadAllText(ConfigPath);
+            return Outpath;
+        }
+    }
+    class CHADOWN
+    {
         [STAThread]
         static void Main(string[] args)
         {
-            
+            ConfigIO config = new ConfigIO();
+            config.CreateConfig();
             while (true)
             {
+                config.ReadConfig();
+                string outpath = config.ReadConfig();
+                Console.WriteLine();
                 Console.Write("Welcome to Jabs' ");
-                TCol("C", "heap ");
-                TCol("A", "ss ");
-                TCol("Down", "loader!\n");
+                CHADMethods.TCol("C", "heap ");
+                CHADMethods.TCol("A", "ss ");
+                CHADMethods.TCol("Down", "loader!\n");
                 Console.WriteLine("Now with 100% less shell scripting!\n");
                 Console.WriteLine("Please select which type of video you wish to *procure*");
                 Console.WriteLine("---------------");
                 Console.WriteLine("A. Youtube Videos");
                 Console.WriteLine("B. BLOB/M3U8 Streams");
-                Console.WriteLine("C. Merge audio and video files.");
+                Console.WriteLine("C. Merge audio and video files.\n\n\n");
+                Console.Write("Press 0 to change where videos are output to.\n");
+                Console.WriteLine($"Current output dir is {outpath}");
                 string ConInputType = Console.ReadLine(); //User selects which one they want.
                 Console.Clear();
                 if (ConInputType == "A") //Method call for YTDL
@@ -127,6 +155,10 @@ namespace CHADOWN
                 else if (ConInputType == "C")
                 {
                     CHADMethods.AVComboMethod();
+                }
+                else if (ConInputType == "0")
+                {
+
                 }
                 else continue; //Repeat if user selects invalid option
                 Console.Clear();
