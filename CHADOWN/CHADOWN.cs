@@ -8,7 +8,7 @@ namespace CHADOWN
 {
     public static class CHADMethods //Class containing all the functional methods for CHADOWN
     {
-        public static void AVComboMethod() //Main part of the A/V Combo module.
+        public static void AVComboMethod(string OutputDir) //Main part of the A/V Combo module.
         {
             Console.Clear();
             Console.WriteLine("Select the video file you wish to use.");
@@ -41,14 +41,13 @@ namespace CHADOWN
             Console.Clear();
             Console.WriteLine("What would you like the file to be named? Don't include the file extension in the name.");
             string OutputName = Console.ReadLine(); //Video file output is named
-            string AVCInputs = $@"/k ffmpeg -i {Videofileselect.FileName} -i {Audiofileselect.FileName} -c copy {Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)}\{OutputName}.mp4";
+            string AVCInputs = $@"/k ffmpeg -i {Videofileselect.FileName} -i {Audiofileselect.FileName} -c copy {OutputDir}\{OutputName}.mp4";
             Process p = Process.Start("CMD.exe", AVCInputs);
             p.WaitForExit();
         }
-        public static void YTDLmethod() //Main part of the YTDL module.
+        public static void YTDLmethod(string OutputDir) //Main part of the YTDL module.
         {
             string[] YTDLarr = new string[5];
-            YTDLarr[4] = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
             Console.Clear();
             Console.WriteLine("Would you like the file to be Audio/Video or just audio?\n");
             Console.WriteLine("(a) Audio/Video");
@@ -73,11 +72,11 @@ namespace CHADOWN
             Console.WriteLine("Paste the URL of the Youtube video.");
             YTDLarr[3] = Console.ReadLine();
             Console.Clear();
-            string strCmdText = $@"/C youtube-dl ${YTDLarr[0]} --output ${YTDLarr[4]}\${YTDLarr[2] + YTDLarr[1]} ${YTDLarr[3]}";
+            string strCmdText = $@"/C youtube-dl ${YTDLarr[0]} --output ${OutputDir}\${YTDLarr[2] + YTDLarr[1]} ${YTDLarr[3]}";
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
-        public static void FMPGmethod() //Main part of the ffmpeg module
+        public static void FMPGmethod(string OutputDir) //Main part of the ffmpeg module
         {
             Console.WriteLine("Please paste the link for the playlist (usually a .m3u8) file");
             string FMPGlink = Console.ReadLine();
@@ -85,7 +84,7 @@ namespace CHADOWN
             Console.WriteLine("What would you like to name the video (Don't include the filetype in the name)?");
             string FMPGvideoname = Console.ReadLine();
             Console.Clear();
-            string strCmdText = $@"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i ${FMPGlink} ${Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)}\${FMPGvideoname}.mp4";
+            string strCmdText = $@"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i ${FMPGlink} ${OutputDir}\${FMPGvideoname}.mp4";
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
@@ -146,17 +145,17 @@ namespace CHADOWN
                 Console.Clear();
                 if (ConInputType == "A") //Method call for YTDL
                 {
-                    CHADMethods.YTDLmethod();
+                    CHADMethods.YTDLmethod(outpath);
                 }
                 else if (ConInputType == "B") //Method call for ffmpeg
                 {
-                    CHADMethods.FMPGmethod();
+                    CHADMethods.FMPGmethod(outpath);
                 }
-                else if (ConInputType == "C")
+                else if (ConInputType == "C") //Method call for combining audio and video file
                 {
-                    CHADMethods.AVComboMethod();
+                    CHADMethods.AVComboMethod(outpath);
                 }
-                else if (ConInputType == "0")
+                else if (ConInputType == "0") //Method call for changing the output directory
                 {
 
                 }
