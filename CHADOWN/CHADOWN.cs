@@ -10,32 +10,36 @@ namespace CHADOWN
         {
             Console.Clear();
             Console.WriteLine("Select the video file you wish to use.");
-            OpenFileDialog Videofileselect = new OpenFileDialog //The following code opens a file explorer dialog so the video file can be chosen. More formats will be added when I clean this up a bit.
+            OpenFileDialog Videofileselect = new OpenFileDialog() //The following code opens a file explorer dialog so the video file can be chosen. More formats will be added when I clean this up a bit.
             {
                 Title = "Select video file",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                Filter = "MP4 Files (*.mp4)|*.mp4*",
-                FilterIndex = 1,
-                RestoreDirectory = true
-            };
-            if (Videofileselect.ShowDialog() == DialogResult.OK)
-                { }
-            Console.Clear();
-            Console.WriteLine("Select the video file you wish to use.");
-            OpenFileDialog Audiofileselect = new OpenFileDialog //The following code opens a file explorer dialog so the audio file can be chosen. More formats will be added when I clean this up a bit.
-            {
-                Title = "Select audio file",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                Filter = "MP3 Files (*.mp3)|*.mp3*|WAV Files (*.wav)|*.wav*",
+                Filter = "MP4 Files (*.mp4)|*.mp4*|All Files (*.*)|*.*",
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
+            if (Videofileselect.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+            Console.Clear();
+            Console.WriteLine("Select the video file you wish to use.");
+            OpenFileDialog Audiofileselect = new OpenFileDialog() //The following code opens a file explorer dialog so the audio file can be chosen. More formats will be added when I clean this up a bit.
+            {
+                Title = "Select audio file",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Filter = "MP3 Files (*.mp3)|*.mp3*|WAV Files (*.wav)|*.wav*|MP4 Files (*.mp4)|*.mp4*|All Files (*.*)|*.*",
+                FilterIndex = 4,
+                RestoreDirectory = true
+            };
             if (Audiofileselect.ShowDialog() == DialogResult.OK)
-                { }
+            {
+
+            }
             Console.Clear();
             Console.WriteLine("What would you like the file to be named? Don't include the file extension in the name.");
             string OutputName = Console.ReadLine(); //Video file output is named
-            string AVCInputs = $@"/C ffmpeg -shortest -i ${Videofileselect.FileName} -i ${Audiofileselect.FileName} -c:v copy -c:a aac ${OutputName}.mp4";
+            string AVCInputs = $@"/k ffmpeg -i {Videofileselect.FileName} -i {Audiofileselect.FileName} -c copy {Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)}\{OutputName}.mp4";
             Process p = Process.Start("CMD.exe", AVCInputs);
             p.WaitForExit();
         }
@@ -139,6 +143,7 @@ namespace CHADOWN
                     AVCombinationClass.AVComboMethod();
                 }
                 else continue; //Repeat if user selects invalid option
+                Console.Clear();
                 Console.WriteLine("Continue? (y/n)");
                 if (Console.ReadLine() == "n") //The user chooses if they need to do another video
                 {
