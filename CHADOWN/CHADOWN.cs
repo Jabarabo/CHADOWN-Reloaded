@@ -41,7 +41,7 @@ namespace CHADOWN
             Console.Clear();
             Console.WriteLine("What would you like the file to be named? Don't include the file extension in the name.");
             string OutputName = Console.ReadLine(); //Video file output is named
-            string AVCInputs = $@"/k ffmpeg -i {Videofileselect.FileName} -i {Audiofileselect.FileName} -c copy {OutputDir}\{OutputName}.mp4";
+            string AVCInputs = $"/k ffmpeg -i \"{Videofileselect.FileName}\" -i \"{Audiofileselect.FileName}\" -c copy \"{OutputDir}\\{OutputName}.mp4\"";
             Process p = Process.Start("CMD.exe", AVCInputs);
             p.WaitForExit();
         }
@@ -72,7 +72,7 @@ namespace CHADOWN
             Console.WriteLine("Paste the URL of the Youtube video.");
             YTDLarr[3] = Console.ReadLine();
             Console.Clear();
-            string strCmdText = $@"/C youtube-dl ${YTDLarr[0]} --output ${OutputDir}\${YTDLarr[2] + YTDLarr[1]} ${YTDLarr[3]}";
+            string strCmdText = $"/C youtube-dl ${YTDLarr[0]} --output \"{OutputDir}\\{YTDLarr[2] + YTDLarr[1]}\" {YTDLarr[3]}";
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
@@ -84,7 +84,7 @@ namespace CHADOWN
             Console.WriteLine("What would you like to name the video (Don't include the filetype in the name)?");
             string FMPGvideoname = Console.ReadLine();
             Console.Clear();
-            string strCmdText = $@"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i ${FMPGlink} ${OutputDir}\${FMPGvideoname}.mp4";
+            string strCmdText = $"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i {FMPGlink} \"{OutputDir}\\{FMPGvideoname}.mp4\"";
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
