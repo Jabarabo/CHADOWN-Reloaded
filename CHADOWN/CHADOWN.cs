@@ -143,23 +143,14 @@ namespace CHADOWN
                 Console.WriteLine($"Current output dir is {outpath}");
                 string ConInputType = Console.ReadLine(); //User selects which one they want.
                 Console.Clear();
-                if (ConInputType == "A") //Method call for YTDL
+                switch (ConInputType) //Allows the user to select which module they would like to use
                 {
-                    CHADMethods.YTDLmethod(outpath);
+                    case "A": CHADMethods.YTDLmethod(outpath); break;
+                    case "B": CHADMethods.FMPGmethod(outpath); break;
+                    case "C": CHADMethods.AVComboMethod(outpath); break;
+                    case "0": Console.WriteLine("Not finished yet"); break;
+                    default: break;
                 }
-                else if (ConInputType == "B") //Method call for ffmpeg
-                {
-                    CHADMethods.FMPGmethod(outpath);
-                }
-                else if (ConInputType == "C") //Method call for combining audio and video file
-                {
-                    CHADMethods.AVComboMethod(outpath);
-                }
-                else if (ConInputType == "0") //Method call for changing the output directory
-                {
-
-                }
-                else continue; //Repeat if user selects invalid option
                 Console.Clear();
                 Console.WriteLine("Continue? (y/n)");
                 if (Console.ReadLine() == "n") //The user chooses if they need to do another video
