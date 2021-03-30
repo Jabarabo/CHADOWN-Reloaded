@@ -171,7 +171,7 @@ namespace CHADOWN
                     case "B": CHADMethods.FMPGmethod(outpath); break;
                     case "C": CHADMethods.AVComboMethod(outpath); break;
                     case "0": config.RewriteConfig(); break;
-                    default: break;
+                    default: continue;
                 }
                 Console.Clear();
                 Console.WriteLine("Continue? (y/n)");
