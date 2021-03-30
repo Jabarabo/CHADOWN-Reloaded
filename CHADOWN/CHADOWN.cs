@@ -99,7 +99,7 @@ namespace CHADOWN
    
     public class ConfigIO//Handles creating, writing to, and rewriting the config
     {
-        readonly string ConfigPath = Directory.GetCurrentDirectory() + @"\" + "config.txt";
+        string ConfigPath = Directory.GetCurrentDirectory() + @"\" + "config.txt";
         public void CreateConfig()//Creates the config if one is not found
         {
             if (!File.Exists(ConfigPath))
@@ -111,10 +111,33 @@ namespace CHADOWN
                 }
             }
         }
-        public string ReadConfig()
+        public string ReadConfig()//Reads the output directory from the config file and copies it into memory
         {
             string Outpath = System.IO.File.ReadAllText(ConfigPath);
             return Outpath;
+        }
+        public void RewriteConfig()//Lets the user select a new output directory, deletes the old config, and replaces it with the new one.
+        {
+            string Outpath = System.IO.File.ReadAllText(ConfigPath);
+            Console.Clear();
+            Console.WriteLine("Select the new output directory.");
+            FolderBrowserDialog NewOutputDir = new FolderBrowserDialog(); //This opens a file dialog so the user can specify a new output directory.
+            if (NewOutputDir.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Outpath = NewOutputDir.SelectedPath;
+            };
+            if (NewOutputDir.ShowDialog() == DialogResult.OK)
+            {}
+            Console.Clear();
+            if (File.Exists(ConfigPath))
+            {
+                File.Delete(ConfigPath);
+            }
+            using (FileStream ConCreate = File.Create(ConfigPath))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(Outpath);
+                ConCreate.Write(info, 0, info.Length);
+            }
         }
     }
     class CHADOWN
@@ -148,7 +171,7 @@ namespace CHADOWN
                     case "A": CHADMethods.YTDLmethod(outpath); break;
                     case "B": CHADMethods.FMPGmethod(outpath); break;
                     case "C": CHADMethods.AVComboMethod(outpath); break;
-                    case "0": Console.WriteLine("Not finished yet"); break;
+                    case "0": config.RewriteConfig(); break;
                     default: break;
                 }
                 Console.Clear();
