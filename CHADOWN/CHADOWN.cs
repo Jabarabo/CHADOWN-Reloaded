@@ -156,7 +156,6 @@ namespace CHADOWN
                 CHADMethods.TCol("C", "heap ");
                 CHADMethods.TCol("A", "ss ");
                 CHADMethods.TCol("Down", "loader!\n");
-                Console.WriteLine("Now with 100% less shell scripting!\n");
                 Console.WriteLine("Please select which type of video you wish to *procure*");
                 Console.WriteLine("---------------");
                 Console.WriteLine("A. Youtube Videos");
