@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace CHADOWN
 {
@@ -138,6 +139,36 @@ namespace CHADOWN
             }
         }
     }
+    public static class ElectricQueuegaloo //Contains Queue-compatable versions of the CHADONW functions (VERY WORK IN PROGRESS).
+    {
+        public static void FMPGQueue(string OutputDir) //FMPG queue function
+        {
+            Console.Clear();
+            int i = 0;
+            bool StillQueueing = true;
+            Queue<string> QVideos = new Queue<string>();
+            while(StillQueueing == true)
+            {
+                Console.WriteLine("Please enter the URL of your queue object. Enter 0 to finalize your queue.");
+                string VidURL = Console.ReadLine();
+                if (VidURL == "0")
+                {
+                    StillQueueing = false;
+                }else{
+                    QVideos.Enqueue(VidURL);
+                }
+            }
+            Console.Clear();
+            foreach (string QVideo in QVideos)
+            {
+                i++;
+                string FMPGlink = QVideo;
+                string FMPGvideoname = "QueueObject " + i;
+                string strCmdText = $"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i {FMPGlink} \"{OutputDir}\\{FMPGvideoname}.mp4\"";
+                Process p = Process.Start("CMD.exe", strCmdText);
+            }
+        }
+    }
     class CHADOWN
     {
         [STAThread]
@@ -158,7 +189,8 @@ namespace CHADOWN
                 Console.WriteLine("---------------");
                 Console.WriteLine("A. Youtube Videos");
                 Console.WriteLine("B. BLOB/M3U8 Streams");
-                Console.WriteLine("C. Merge audio and video files.\n\n\n");
+                Console.WriteLine("C. Merge audio and video files.");
+                Console.WriteLine("D. BLOB/M3U8 Streams 2: Electric Queuegaloo.\n\n\n");
                 Console.Write("Press 0 to change where videos are output to.\n");
                 Console.WriteLine($"Current output dir is {outpath}");
                 string ConInputType = Console.ReadLine(); //User selects which one they want.
@@ -168,6 +200,7 @@ namespace CHADOWN
                     case "A": CHADMethods.YTDLmethod(outpath); break;
                     case "B": CHADMethods.FMPGmethod(outpath); break;
                     case "C": CHADMethods.AVComboMethod(outpath); break;
+                    case "D" :ElectricQueuegaloo.FMPGQueue(outpath); break;
                     case "0": config.RewriteConfig(); break;
                     default: continue;
                 }
