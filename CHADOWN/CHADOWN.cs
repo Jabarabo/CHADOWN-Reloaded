@@ -72,7 +72,7 @@ namespace CHADOWN
             Console.WriteLine("Paste the URL of the Youtube video.");
             YTDLarr[3] = Console.ReadLine();
             Console.Clear();
-            string strCmdText = $"/C youtube-dl ${YTDLarr[0]} --output \"{OutputDir}\\{YTDLarr[2] + YTDLarr[1]}\" {YTDLarr[3]}";
+            string strCmdText = $"/C youtube-dl {YTDLarr[0]} --output \"{OutputDir}\\{YTDLarr[2] + YTDLarr[1]}\" {YTDLarr[3]}";
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
