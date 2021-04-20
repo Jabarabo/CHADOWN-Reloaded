@@ -1,6 +1,6 @@
 # **CHADOWN**
 ## The Basics
-CHADOWN is my C# rewrite of my shell script [SHADOWN](https://github.com/Jabarabo/SHADOWN). The point is so this can be run on windows unlike SHADOWN which was *NIX exclusive. All files are currently output into the user's Videos folder. 
+CHADOWN is my C# rewrite of my shell script [SHADOWN](https://github.com/Jabarabo/SHADOWN). The point is so this can be run on windows unlike SHADOWN which was *NIX exclusive. All files are currently output into the user's Videos folder. This can now be changed in the program's main menu.
 
 ## Requirements
 [FFmpeg](https://ffmpeg.org/)
