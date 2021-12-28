@@ -5,7 +5,7 @@ CHADOWN is my C# rewrite of my shell script [SHADOWN](https://github.com/Jabarab
 ## Requirements
 [FFmpeg](https://ffmpeg.org/)
 
-[Youtube-DL](https://ytdl-org.github.io/youtube-dl/download.html)
+[yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 ## Operational Instructions
 **Youtube-DL**: Youtube-DL option is pretty easy to use. Follow the on screen instruction. If you need to know which sites you can use this on look [here](https://ytdl-org.github.io/youtube-dl/supportedsites.html).
