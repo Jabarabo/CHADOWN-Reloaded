@@ -48,32 +48,48 @@ namespace CHADOWN
         }
         public static void YTDLmethod(string OutputDir) //Main part of the YTDL module.
         {
-            string[] YTDLarr = new string[5];
-            Console.Clear();
-            Console.WriteLine("Would you like the file to be Audio/Video or just audio?\n");
-            Console.WriteLine("(a) Audio/Video");
-            Console.WriteLine("(b) Just Audio");
-            string YTDLtype = Console.ReadLine();
-            Console.Clear();
-            if (YTDLtype == "b")
+            string outputFormat = ""; //What yt-dl is told to output as.
+            string fileExtension = ""; //The actual extension used for the file.
+            string YTDLtype = ""; //Decides whether it will become an audio or A/V file.
+            string fileName = ""; //Name of the file without the extension.
+            string videoURL = ""; //URL of the video.
+            
+            while (true)
             {
-                YTDLarr[0] = "--extract-audio --audio-format mp3 --audio-quality 0";
-                YTDLarr[1] = ".mp3";
-            }
-            else if (YTDLtype == "a")
-            {
-                YTDLarr[0] = "--format mp4";
-                YTDLarr[1] = ".mp4";
-
+                Console.Clear();
+                Console.WriteLine("Would you like the file to be Audio/Video or just audio?\n");
+                Console.WriteLine("(a) Audio/Video");
+                Console.WriteLine("(b) Just Audio");
+                YTDLtype = Console.ReadLine();
+                Console.Clear();
+                if (YTDLtype == "b")
+                {
+                    outputFormat = "--extract-audio --audio-format mp3 --audio-quality 0";
+                    fileExtension = ".mp3";
+                    break;
+                }
+                else if (YTDLtype == "a")
+                {
+                    outputFormat = "--format mp4";
+                    fileExtension = ".mp4";
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
             }
             Console.Clear();
+            
             Console.WriteLine("What would you like to name the video (Without file extension)?");
-            YTDLarr[2] = Console.ReadLine();
+            fileName = Console.ReadLine();
             Console.Clear();
+            
             Console.WriteLine("Paste the URL of the Youtube video.");
-            YTDLarr[3] = Console.ReadLine();
+            videoURL = Console.ReadLine();
             Console.Clear();
-            string strCmdText = $"/C youtube-dl {YTDLarr[0]} --output \"{OutputDir}\\{YTDLarr[2] + YTDLarr[1]}\" {YTDLarr[3]}";
+            
+            string strCmdText = $"/K yt-dlp {videoURL} --output \"{OutputDir}\\{fileName + fileExtension}\" {outputFormat}";
             Process p = Process.Start("CMD.exe", strCmdText);
             p.WaitForExit();
         }
@@ -139,17 +155,21 @@ namespace CHADOWN
             }
         }
     }
-    public static class ElectricQueuegaloo //Contains Queue-compatable versions of the CHADONW functions (VERY WORK IN PROGRESS).
+    public static class ElectricQueuegaloo //Contains Queue-compatable versions of the CHADOWN functions (VERY WORK IN PROGRESS).
     {
         public static void FMPGQueue(string OutputDir) //FMPG queue function
         {
             Console.Clear();
+            
             int i = 0;
             bool StillQueueing = true;
             Queue<string> QVideos = new Queue<string>();
+            
             while(StillQueueing == true)
             {
+                Console.Clear();
                 Console.WriteLine("Please enter the URL of your queue object. Enter 0 to finalize your queue.");
+                Console.WriteLine("Objects in queue:" + i);
                 string VidURL = Console.ReadLine();
                 if (VidURL == "0")
                 {
@@ -157,8 +177,13 @@ namespace CHADOWN
                 }else{
                     QVideos.Enqueue(VidURL);
                 }
+                Console.Clear();
+                i++;
             }
+            
             Console.Clear();
+            i = 0;
+            
             foreach (string QVideo in QVideos)
             {
                 i++;
@@ -166,6 +191,38 @@ namespace CHADOWN
                 string FMPGvideoname = "QueueObject " + i;
                 string strCmdText = $"/C ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i {FMPGlink} \"{OutputDir}\\{FMPGvideoname}.mp4\"";
                 Process p = Process.Start("CMD.exe", strCmdText);
+            }
+        }
+        public static void YTDLQueueA(string OutputDir)
+        {
+            Console.Clear();
+
+            int i = 0;
+            bool StillQueueing = true;
+            Queue<string> QVideos = new Queue<string>();
+
+            while (StillQueueing == true)
+            {
+                Console.Clear();
+                Console.WriteLine("Please enter the URL of your queue object. Enter 0 to finalize your queue.");
+                Console.WriteLine("Objects in queue:" + i);
+                string VidURL = Console.ReadLine();
+                if (VidURL == "0")
+                {
+                    StillQueueing = false;
+                }
+                else
+                {
+                    QVideos.Enqueue(VidURL);
+                }
+                i++;
+            }
+            Console.Clear();
+            i = 0;
+
+            foreach (string QVideo in QVideos)
+            {
+
             }
         }
     }
@@ -182,7 +239,7 @@ namespace CHADOWN
                 string outpath = config.ReadConfig();
                 Console.WriteLine();
                 Console.Write("Welcome to Jabs' ");
-                CHADMethods.TCol("C", "heap ");
+                CHADMethods.TCol("Ch", "eap ");
                 CHADMethods.TCol("A", "ss ");
                 CHADMethods.TCol("Down", "loader!\n");
                 Console.WriteLine("Please select which type of video you wish to *procure*");
@@ -200,7 +257,8 @@ namespace CHADOWN
                     case "A": CHADMethods.YTDLmethod(outpath); break;
                     case "B": CHADMethods.FMPGmethod(outpath); break;
                     case "C": CHADMethods.AVComboMethod(outpath); break;
-                    case "D" :ElectricQueuegaloo.FMPGQueue(outpath); break;
+                    case "D": ElectricQueuegaloo.FMPGQueue(outpath); break;
+                    case "E": //Nothing yet. Will be Youtube-dl 2 Electric Queuegaloo
                     case "0": config.RewriteConfig(); break;
                     default: continue;
                 }
